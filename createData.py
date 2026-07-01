@@ -16,7 +16,10 @@ def create_data(num_samples=1000, start_time = "2026-06-01 12:00:00"):
     lcl = center_line - 3 * np.std(data)
     anomalyFlag = (data > ucl) | (data < lcl)
     anomalyFlag = anomalyFlag.astype(int)
-    
+
+    # Color hex string (#FF0000 for red, #00FF00 for green)
+    colors = np.where(anomalyFlag == 1, "#FF0000", "#00FF00")
+
     # 3. Create the DataFrame
     df = pd.DataFrame({
         "time_stamp": time_stamps,
@@ -24,7 +27,8 @@ def create_data(num_samples=1000, start_time = "2026-06-01 12:00:00"):
         "center_line": center_line,
         "ucl": ucl,
         "lcl": lcl,
-        "anomalyFlag": anomalyFlag
+        "anomalyFlag": anomalyFlag,
+        "colors": colors
     })
 
     return df
