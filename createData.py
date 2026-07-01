@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from datetime import datetime
 
 def create_data(num_samples=1000, start_time = "2026-06-01 12:00:00"):
     
@@ -9,17 +10,27 @@ def create_data(num_samples=1000, start_time = "2026-06-01 12:00:00"):
     # 2. Generate i.i.d. N(0, 1) standard normal distribution data
     data = np.random.normal(loc=0.0, scale=1.0, size=num_samples)
 
+    # 3. Add Center Line, Upper Control Limit (UCL), and Lower Control Limit (LCL)
+    center_line = np.mean(data)
+    ucl = center_line + 3 * np.std(data)
+    lcl = center_line - 3 * np.std(data)
+    
     # 3. Create the DataFrame
     df = pd.DataFrame({
         "time_stamp": time_stamps,
-        "data": data
+        "data": data,
+        "center_line": center_line,
+        "ucl": ucl,
+        "lcl": lcl
     })
 
     return df
 
 csvF = "generated_data.csv"
 
-df = create_data(100000)
+start_time = datetime.now()
+
+df = create_data(1000, start_time=start_time)
 df.to_csv(csvF, index_label="index")
 
 print("CSV file 'generated_data.csv' created successfully!")
