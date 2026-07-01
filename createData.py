@@ -14,6 +14,7 @@ def create_data(num_samples=1000, start_time = "2026-06-01 12:00:00"):
     center_line = np.mean(data)
     ucl = center_line + 3 * np.std(data)
     lcl = center_line - 3 * np.std(data)
+    anomalyFlag = (data > ucl) | (data < lcl)
     
     # 3. Create the DataFrame
     df = pd.DataFrame({
@@ -21,7 +22,8 @@ def create_data(num_samples=1000, start_time = "2026-06-01 12:00:00"):
         "data": data,
         "center_line": center_line,
         "ucl": ucl,
-        "lcl": lcl
+        "lcl": lcl,
+        "anomalyFlag": anomalyFlag
     })
 
     return df
